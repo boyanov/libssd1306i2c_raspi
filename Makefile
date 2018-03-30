@@ -1,16 +1,36 @@
-# This Makefile file for the libssd1306i2c_test test program for the libssd1306i2c library.
+# This Makefile file for the test program for the LIBSSD1306I2C library.
 
 CC=gcc
 CFLAGS=-c -Wall
 LIBS=-lwiringPi
 
-all: libssd1306i2c_test
+all: libssd1306i2c_demo1 libssd1306i2c_test1 libssd1306i2c_test2
 
-libssd1306i2c_test: libssd1306i2c_test.o libssd1306i2c.o libssd1306i2c6x8.o libssd1306i2c8x16.o
-	$(CC) libssd1306i2c_test.o libssd1306i2c.o libssd1306i2c6x8.o libssd1306i2c8x16.o $(LIBS) -o libssd1306i2c_test
+# libssd1306i2c_demo1
 
-libssd1306i2c_test.o: libssd1306i2c_test.c
-	$(CC) $(CFLAGS) libssd1306i2c_test.c
+libssd1306i2c_demo1: libssd1306i2c_demo1.o libssd1306i2c.o libssd1306i2c6x8.o libssd1306i2c8x16.o
+	$(CC) libssd1306i2c_demo1.o libssd1306i2c.o libssd1306i2c6x8.o libssd1306i2c8x16.o $(LIBS) -o libssd1306i2c_demo1
+
+libssd1306i2c_demo1.o: libssd1306i2c_demo1.c
+	$(CC) $(CFLAGS) libssd1306i2c_demo1.c
+
+# libssd1306i2c_test1
+
+libssd1306i2c_test1: libssd1306i2c_test1.o libssd1306i2c.o libssd1306i2c6x8.o libssd1306i2c8x16.o
+	$(CC) libssd1306i2c_test1.o libssd1306i2c.o libssd1306i2c6x8.o libssd1306i2c8x16.o $(LIBS) -o libssd1306i2c_test1
+
+libssd1306i2c_test1.o: libssd1306i2c_test1.c
+	$(CC) $(CFLAGS) libssd1306i2c_test1.c
+
+# libssd1306i2c_test2
+
+libssd1306i2c_test2: libssd1306i2c_test2.o libssd1306i2c.o libssd1306i2c6x8.o libssd1306i2c8x16.o
+	$(CC) libssd1306i2c_test2.o libssd1306i2c.o libssd1306i2c6x8.o libssd1306i2c8x16.o $(LIBS) -o libssd1306i2c_test2
+
+libssd1306i2c_test2.o: libssd1306i2c_test2.c
+	$(CC) $(CFLAGS) libssd1306i2c_test2.c
+
+# Other library files
 
 libssd1306i2c.o: libssd1306i2c.c
 	$(CC) $(CFLAGS) libssd1306i2c.c
@@ -21,6 +41,8 @@ libssd1306i2c6x8.o: libssd1306i2c6x8.c
 libssd1306i2c8x16.o: libssd1306i2c8x16.c
 	$(CC) $(CFLAGS) libssd1306i2c8x16.c
 
+# Clean
+
 clean:
-	rm *.o libssd1306i2c_test
+	rm *.o libssd1306i2c_demo1 libssd1306i2c_test1 libssd1306i2c_test2
 
