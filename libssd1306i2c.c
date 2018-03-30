@@ -54,14 +54,14 @@ int ssd1306i2c_init(uint8_t address) {
 
 /* -------------------------------------------------------------------------- */
 
-void ssd1306i2c_pos(uint8_t x, uint8_t y) {
+void ssd1306i2c_setpos(uint8_t x, uint8_t y) {
 	wiringPiI2CWriteReg8(ssd1306i2c_fd, 0x00, 0xb0 + y);
 	wiringPiI2CWriteReg8(ssd1306i2c_fd, 0x00, (x >> 4) | 0x10); // | 0x10
 	wiringPiI2CWriteReg8(ssd1306i2c_fd, 0x00, (x & 0x0f)); // | 0x01
 }
 
 void ssd1306i2c_fill4(uint8_t p1, uint8_t p2, uint8_t p3, uint8_t p4) {
-	ssd1306i2c_pos(0, 0);
+	ssd1306i2c_setpos(0, 0);
 	for (uint16_t i = 0; i < 128 * 8 / 4; i++) {
 		wiringPiI2CWriteReg8(ssd1306i2c_fd, 0x40, p1);
 		wiringPiI2CWriteReg8(ssd1306i2c_fd, 0x40, p2);
@@ -103,11 +103,11 @@ void ssd1306i2c_string_font8x16xy(uint8_t x, uint8_t y, const char s[]) {
 			x = 0;
 			y++;
 		}
-		ssd1306i2c_pos(x, y);
+		ssd1306i2c_setpos(x, y);
 		for (uint8_t i = 0; i < 8; i++) {
 			wiringPiI2CWriteReg8(ssd1306i2c_fd, 0x40, ssd1306i2c_font8x16[c * 16 + i]);
 		}
-		ssd1306i2c_pos(x, y + 1);
+		ssd1306i2c_setpos(x, y + 1);
 		for (uint8_t i = 0; i < 8; i++) {
 			wiringPiI2CWriteReg8(ssd1306i2c_fd, 0x40, ssd1306i2c_font8x16[c * 16 + i + 8]);
 		}
