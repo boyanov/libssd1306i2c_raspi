@@ -4,7 +4,7 @@ CC=gcc
 CFLAGS=-c -Wall
 LIBS=-lwiringPi
 
-all: libssd1306i2c_demo1 libssd1306i2c_test1 libssd1306i2c_test2
+all: libssd1306i2c_demo1 libssd1306i2c_test1 libssd1306i2c_test2 libssd1306i2c_chart1
 
 # libssd1306i2c_demo1
 
@@ -29,6 +29,14 @@ libssd1306i2c_test2: libssd1306i2c_test2.o libssd1306i2c.o libssd1306i2c6x8.o li
 
 libssd1306i2c_test2.o: libssd1306i2c_test2.c
 	$(CC) $(CFLAGS) libssd1306i2c_test2.c
+
+# libssd1306i2c_chart1
+
+libssd1306i2c_chart1: libssd1306i2c_chart1.o libssd1306i2c.o libssd1306i2c6x8.o libssd1306i2c8x16.o
+	$(CC) libssd1306i2c_chart1.o libssd1306i2c.o libssd1306i2c6x8.o libssd1306i2c8x16.o $(LIBS) -o libssd1306i2c_chart1
+
+libssd1306i2c_chart1.o: libssd1306i2c_chart1.c
+	$(CC) $(CFLAGS) libssd1306i2c_chart1.c
 
 # Other library files
 

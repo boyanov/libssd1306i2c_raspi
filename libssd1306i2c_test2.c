@@ -31,12 +31,12 @@ int main (int argc, char *argv[]) {
 	for (int i = 0; i <= 20; i++) ssd1306i2c_char('A' + i);
 	ssd1306i2c_pos(0, 1);
 	ssd1306i2c_string("This is a testing app");
-	
+
 	// ---- Print some large and small text on the screen ----
 	ssd1306i2c_stringxy(12, 2, "LibSSD1306i2c");
 	ssd1306i2c_pos(0, 4);
 	ssd1306i2c_string("library for I2C/OLEDs");
-	
+
 	// ---- More text on the screen ----
 	ssd1306i2c_pos(0, 5);
 	ssd1306i2c_string("host:");
@@ -48,7 +48,7 @@ int main (int argc, char *argv[]) {
 	ssd1306i2c_pos(6, 6);
 	uint32_t ip = 0x6a7b8c9d;
 	char ip_sb[16];
-	sprintf(ip_sb, "%d.%d.%d.%d", (ip>>24 & 0xff), (ip>>16 & 0xff), (ip>>8 & 0xff), (ip & 0xff));
+	sprintf(ip_sb, "%d.%d.%d.%d", (ip >> 24 & 0xff), (ip >> 16 & 0xff), (ip >> 8 & 0xff), (ip & 0xff));
 	ssd1306i2c_string(ip_sb);
 	ssd1306i2c_pos(0, 7);
 	ssd1306i2c_string("val3:");
