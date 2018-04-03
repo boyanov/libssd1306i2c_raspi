@@ -16,8 +16,8 @@ static int ssd1306i2c_fd;
 const uint8_t ssd1306i2c_init_sequence[] = {	// Initialization Sequence
 	0xAE,			// Display OFF (sleep mode)
 	0x20, 0b00,		// Set Memory Addressing Mode
-					// 00=Horizontal Addressing Mode; 01=Vertical Addressing Mode;
-					// 10=Page Addressing Mode (RESET); 11=Invalid
+	// 00=Horizontal Addressing Mode; 01=Vertical Addressing Mode;
+	// 10=Page Addressing Mode (RESET); 11=Invalid
 	0xB0,			// Set Page Start Address for Page Addressing Mode, 0-7
 	0xC8,			// Set COM Output Scan Direction
 	0x00,			// ---set low column address
@@ -28,7 +28,7 @@ const uint8_t ssd1306i2c_init_sequence[] = {	// Initialization Sequence
 	0xA6,			// Set display mode. A6=Normal; A7=Inverse
 	0xA8, 0x3F,		// Set multiplex ratio(1 to 64)
 	0xA4,			// Output RAM to Display
-					// 0xA4=Output follows RAM content; 0xA5,Output ignores RAM content
+	// 0xA4=Output follows RAM content; 0xA5,Output ignores RAM content
 	0xD3, 0x00,		// Set display offset. 00 = no offset
 	0xD5,			// --set display clock divide ratio/oscillator frequency
 	0xF0,			// --set divide ratio
@@ -81,6 +81,8 @@ void ssd1306i2c_fill(uint8_t p) {
 /* -------------------------------------------------------------------------- */
 
 void ssd1306i2c_char_font6x8(char c) {
+	if (c < 32) c = 127;
+	if (c > 127) c = 127;
 	uint8_t b = c - 32;
 	uint8_t *font6x8 = ssd1306i2c_font6x8;
 	for (uint8_t i = 0; i < 6; i++) {
@@ -88,10 +90,15 @@ void ssd1306i2c_char_font6x8(char c) {
 	}
 }
 
-void ssd1306i2c_string_font6x8(char *s) {
+void ssd1306i2c_string_font6x8(const char s[]) {
 	while (*s) {
 		ssd1306i2c_char_font6x8(*s++);
 	}
+}
+
+void ssd1306i2c_string_font6x8xy(uint8_t x, uint8_t y, const char s[]) {
+	ssd1306i2c_setpos(x, y);
+	ssd1306i2c_string_font6x8(s);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -113,6 +120,28 @@ void ssd1306i2c_string_font8x16xy(uint8_t x, uint8_t y, const char s[]) {
 		}
 		x += 8;
 	}
+}
+
+/* -------------------------------------------------------------------------- */
+
+uint8_t ssd1306i2c_chart_buf[128];
+
+void ssd1306i2c_chart_out(uint8_t row) {
+	ssd1306i2c_setpos(0, row);
+	for (uint8_t i = 0; i <= 127; i++)
+		wiringPiI2CWriteReg8(ssd1306i2c_fd, 0x40, ssd1306i2c_chart_buf[i]);
+}
+
+void ssd1306i2c_chart_shift(void) {
+	for (uint8_t i = 0; i <= 126; i++)
+		ssd1306i2c_chart_buf[i] = ssd1306i2c_chart_buf[i + 1];
+	ssd1306i2c_chart_buf[127] = 0;
+}
+
+void ssd1306i2c_chart_val(uint8_t val) {
+	uint8_t bar = 0xff << (7 - (val >> 5));
+	// printf("val=0x%02X (%04i) - bar=0x%02X (%04i)\n", val, val, bar, bar);
+	ssd1306i2c_chart_buf[127] = bar;
 }
 
 /* --- EOF ------------------------------------------------------------------ */

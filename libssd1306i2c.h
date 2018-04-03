@@ -31,8 +31,13 @@ void ssd1306i2c_fill2(uint8_t, uint8_t);
 void ssd1306i2c_fill(uint8_t);
 
 void ssd1306i2c_char_font6x8(char);
-void ssd1306i2c_string_font6x8(char *);
+void ssd1306i2c_string_font6x8(const char []);
+void ssd1306i2c_string_font6x8xy(uint8_t, uint8_t, const char[]);
 void ssd1306i2c_string_font8x16xy(uint8_t, uint8_t, const char[]);
+
+void ssd1306i2c_chart_out(uint8_t);
+void ssd1306i2c_chart_shift(void);
+void ssd1306i2c_chart_val(uint8_t);
 
 #endif
 
