@@ -19,19 +19,18 @@ int main (int argc, char *argv[]) {
 	// Debugging
 	// printf("%i \n", argc);
 	// if (argc > 1) for (int i = 0; i < argc; i++) printf("%i: %s \n", i, argv[i]);
-	
-	// TODO: Add "-f" option for fill with a byte pattern	
+
+	// TODO: Add "-f" option for fill with a byte pattern
 	// TODO: Add "-p" option for fill with a 2-byte pattern
 
-	int k_flag = 0;
-	int l_flag = 0;
+	int i_flag = 0, l_flag = 0, k_flag = 0;
 	char *c_opt, *r_opt, *x_opt, *y_opt;
 	c_opt = r_opt = x_opt = y_opt = NULL;
 	// int c_val, r_val, x_val, y_val;
-	int oled_x, oled_y;
+	int oled_x = 0, oled_y = 0;
 	int c;
 	opterr = 0;
-	while ((c = getopt (argc, argv, ":c:r:x:y:klh")) != -1) {
+	while ((c = getopt (argc, argv, ":c:r:x:y:ilkh")) != -1) {
 		switch (c) {
 		case 'c':	// column
 			c_opt = optarg;
@@ -45,11 +44,14 @@ int main (int argc, char *argv[]) {
 		case 'y':	// y
 			y_opt = optarg;
 			break;
-		case 'k':
-			k_flag = 1;
+		case 'i':
+			i_flag = 1;
 			break;
 		case 'l':
 			l_flag = 1;
+			break;
+		case 'k':
+			k_flag = 1;
 			break;
 		case 'h':	// Help
 			printf("How to use this command: TBD.\n");
@@ -70,13 +72,13 @@ int main (int argc, char *argv[]) {
 			break;
 		default:
 			fprintf(stderr, "WARNING: Unknown state - optarg=\"%s\" optopt=\"%c\" optind=\"%i\"\n", optarg, optopt, optind);
-			abort ();
+			abort();
 		}
 	}
 
 	if (x_opt != NULL) {
 		oled_x = atoi(x_opt);
-	} else 	if (c_opt != NULL) {
+	} else if (c_opt != NULL) {
 		oled_x = atoi(c_opt) * 6;
 	} // ELSE use the default
 
@@ -107,10 +109,16 @@ int main (int argc, char *argv[]) {
 	// ---- Init the library and the display ----
 	wiringPiSetup();
 	// NOTE: Use i2cdetect command to find your device address
-	if(ssd1306i2c_init(0x3c) == -1) {
+	int init_result;
+	if (i_flag)
+		init_result = ssd1306i2c_init(0x3c);
+	else
+		init_result = ssd1306i2c_initq(0x3c);
+	if(init_result == -1) {
 		fprintf(stderr, "ERROR: Cannot setup the I2C device.\n");
 		return -1;
 	}
+
 	if (l_flag) ssd1306i2c_clear();
 
 	ssd1306i2c_setpos(oled_x, oled_y);
