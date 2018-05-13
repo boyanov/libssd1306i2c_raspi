@@ -23,6 +23,7 @@ extern uint8_t ssd1306i2c_font8x16[];
 /* -------------------------------------------------------------------------- */
 
 int ssd1306i2c_init(uint8_t address);
+int ssd1306i2c_initq(uint8_t address);
 
 void ssd1306i2c_setpos(uint8_t, uint8_t);
 

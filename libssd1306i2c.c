@@ -44,11 +44,14 @@ const uint8_t ssd1306i2c_init_sequence[] = {	// Initialization Sequence
 /* -------------------------------------------------------------------------- */
 
 int ssd1306i2c_init(uint8_t address) {
-	ssd1306i2c_fd = wiringPiI2CSetup(address);
-	if (ssd1306i2c_fd == -1) return ssd1306i2c_fd;
-	for (uint8_t i = 0; i < sizeof (ssd1306i2c_init_sequence); i++) {
+	if ((ssd1306i2c_fd = ssd1306i2c_initq(address)) == -1) return ssd1306i2c_fd;
+	for (uint8_t i = 0; i < sizeof (ssd1306i2c_init_sequence); i++)
 		wiringPiI2CWriteReg8(ssd1306i2c_fd, 0x00, ssd1306i2c_init_sequence[i]);
-	}
+	return ssd1306i2c_fd;
+}
+
+int ssd1306i2c_initq(uint8_t address) {
+	ssd1306i2c_fd = wiringPiI2CSetup(address);
 	return ssd1306i2c_fd;
 }
 
