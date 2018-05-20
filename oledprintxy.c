@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <ctype.h>
+#include <getopt.h>
 
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
