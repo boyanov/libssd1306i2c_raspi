@@ -1,7 +1,7 @@
 # This Makefile file for the test program for the LIBSSD1306I2C library.
 
 CC=gcc
-CFLAGS=-c -Wall
+CFLAGS=-c -Wall -std=c99
 LIBS=-lwiringPi
 
 all: libssd1306i2c_demo1 libssd1306i2c_test1 libssd1306i2c_test2 libssd1306i2c_chart1 libssd1306i2c_printxy1 oledprintxy
