@@ -1,7 +1,7 @@
 # This Makefile file for the test program for the LIBSSD1306I2C library.
 
 CC=gcc
-CFLAGS=-c -Wall
+CFLAGS=-c -Wall -std=c99
 LIBS=-lwiringPi
 OBJ_DIR=build
 BIN_DIR=bin
