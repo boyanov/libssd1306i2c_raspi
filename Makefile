@@ -3,70 +3,33 @@
 CC=gcc
 CFLAGS=-c -Wall
 LIBS=-lwiringPi
+OBJ_DIR=build
+BIN_DIR=bin
+OBJS=$(patsubst %, $(OBJ_DIR)/%, \
+	libssd1306i2c.o \
+	libssd1306i2c6x8.o \
+	libssd1306i2c8x16.o \
+)
+EXECUTABLES=$(patsubst %, $(BIN_DIR)/%, \
+	libssd1306i2c_demo1 \
+	libssd1306i2c_test1 \
+	libssd1306i2c_test2 \
+	libssd1306i2c_chart1 \
+	libssd1306i2c_printxy1 \
+	oledprintxy \
+)
 
-all: libssd1306i2c_demo1 libssd1306i2c_test1 libssd1306i2c_test2 libssd1306i2c_chart1 libssd1306i2c_printxy1 oledprintxy
+all: directories $(EXECUTABLES)
 
-# libssd1306i2c_demo1
+directories:
+	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(BIN_DIR)
 
-libssd1306i2c_demo1: libssd1306i2c_demo1.o libssd1306i2c.o libssd1306i2c6x8.o libssd1306i2c8x16.o
-	$(CC) libssd1306i2c_demo1.o libssd1306i2c.o libssd1306i2c6x8.o libssd1306i2c8x16.o $(LIBS) -o libssd1306i2c_demo1
+$(OBJ_DIR)/%.o: %.c %.h
+	$(CC) $(CFLAGS) $< -o $@
 
-libssd1306i2c_demo1.o: libssd1306i2c_demo1.c
-	$(CC) $(CFLAGS) libssd1306i2c_demo1.c
-
-# libssd1306i2c_test1
-
-libssd1306i2c_test1: libssd1306i2c_test1.o libssd1306i2c.o libssd1306i2c6x8.o libssd1306i2c8x16.o
-	$(CC) libssd1306i2c_test1.o libssd1306i2c.o libssd1306i2c6x8.o libssd1306i2c8x16.o $(LIBS) -o libssd1306i2c_test1
-
-libssd1306i2c_test1.o: libssd1306i2c_test1.c
-	$(CC) $(CFLAGS) libssd1306i2c_test1.c
-
-# libssd1306i2c_test2
-
-libssd1306i2c_test2: libssd1306i2c_test2.o libssd1306i2c.o libssd1306i2c6x8.o libssd1306i2c8x16.o
-	$(CC) libssd1306i2c_test2.o libssd1306i2c.o libssd1306i2c6x8.o libssd1306i2c8x16.o $(LIBS) -o libssd1306i2c_test2
-
-libssd1306i2c_test2.o: libssd1306i2c_test2.c
-	$(CC) $(CFLAGS) libssd1306i2c_test2.c
-
-# libssd1306i2c_chart1
-
-libssd1306i2c_chart1: libssd1306i2c_chart1.o libssd1306i2c.o libssd1306i2c6x8.o libssd1306i2c8x16.o
-	$(CC) libssd1306i2c_chart1.o libssd1306i2c.o libssd1306i2c6x8.o libssd1306i2c8x16.o $(LIBS) -o libssd1306i2c_chart1
-
-libssd1306i2c_chart1.o: libssd1306i2c_chart1.c
-	$(CC) $(CFLAGS) libssd1306i2c_chart1.c
-
-# libssd1306i2c_printxy1
-
-libssd1306i2c_printxy1: libssd1306i2c_printxy1.o libssd1306i2c.o libssd1306i2c6x8.o libssd1306i2c8x16.o
-	$(CC) libssd1306i2c_printxy1.o libssd1306i2c.o libssd1306i2c6x8.o libssd1306i2c8x16.o $(LIBS) -o libssd1306i2c_printxy1
-
-libssd1306i2c_printxy1.o: libssd1306i2c_printxy1.c
-	$(CC) $(CFLAGS) libssd1306i2c_printxy1.c
-
-# oledprintxy
-
-oledprintxy: oledprintxy.o libssd1306i2c.o libssd1306i2c6x8.o libssd1306i2c8x16.o
-	$(CC) oledprintxy.o libssd1306i2c.o libssd1306i2c6x8.o libssd1306i2c8x16.o $(LIBS) -o oledprintxy
-
-oledprintxy.o: oledprintxy.c
-	$(CC) $(CFLAGS) oledprintxy.c
-
-# Other library files
-
-libssd1306i2c.o: libssd1306i2c.c
-	$(CC) $(CFLAGS) libssd1306i2c.c
-
-libssd1306i2c6x8.o: libssd1306i2c6x8.c
-	$(CC) $(CFLAGS) libssd1306i2c6x8.c
-
-libssd1306i2c8x16.o: libssd1306i2c8x16.c
-	$(CC) $(CFLAGS) libssd1306i2c8x16.c
-
-# Clean
+$(EXECUTABLES): $(BIN_DIR)/%: $(OBJ_DIR)/$(notdir /%).o $(OBJS)
+	$(CC) $< $(OBJS) $(LIBS) -o $@
 
 clean:
-	rm *.o libssd1306i2c_demo1 libssd1306i2c_test1 libssd1306i2c_test2 libssd1306i2c_chart1 libssd1306i2c_printxy1 oledprintxy
-
+	rm -rf $(BIN_DIR) $(OBJ_DIR)
