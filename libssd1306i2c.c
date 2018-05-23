@@ -70,7 +70,7 @@ void ssd1306i2c_set_page_address(uint8_t low, uint8_t high) {
 }
 
 void ssd1306i2c_setpos(uint8_t x, uint8_t y) {
-    ssd1306i2c_set_page_address(y, 7+y);
+	ssd1306i2c_set_page_address(y, 7+y);
 	wiringPiI2CWriteReg8(ssd1306i2c_fd, 0x00, (x >> 4) | 0x10); // | 0x10
 	wiringPiI2CWriteReg8(ssd1306i2c_fd, 0x00, (x & 0x0f)); // | 0x01
 }
