@@ -57,8 +57,20 @@ int ssd1306i2c_initq(uint8_t address) {
 
 /* -------------------------------------------------------------------------- */
 
+void ssd1306i2c_set_column_address(uint8_t low, uint8_t high) {
+	wiringPiI2CWriteReg8(ssd1306i2c_fd, 0x00, 0x21);
+	wiringPiI2CWriteReg8(ssd1306i2c_fd, 0x00, low);
+	wiringPiI2CWriteReg8(ssd1306i2c_fd, 0x00, high);
+}
+
+void ssd1306i2c_set_page_address(uint8_t low, uint8_t high) {
+	wiringPiI2CWriteReg8(ssd1306i2c_fd, 0x00, 0x22);
+	wiringPiI2CWriteReg8(ssd1306i2c_fd, 0x00, low);
+	wiringPiI2CWriteReg8(ssd1306i2c_fd, 0x00, high);
+}
+
 void ssd1306i2c_setpos(uint8_t x, uint8_t y) {
-	wiringPiI2CWriteReg8(ssd1306i2c_fd, 0x00, 0xb0 + y);
+	ssd1306i2c_set_page_address(y, 7+y);
 	wiringPiI2CWriteReg8(ssd1306i2c_fd, 0x00, (x >> 4) | 0x10); // | 0x10
 	wiringPiI2CWriteReg8(ssd1306i2c_fd, 0x00, (x & 0x0f)); // | 0x01
 }
