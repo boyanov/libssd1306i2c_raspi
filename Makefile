@@ -25,11 +25,13 @@ directories:
 	@mkdir -p $(OBJ_DIR)
 	@mkdir -p $(BIN_DIR)
 
-$(OBJ_DIR)/%.o: %.c %.h
+$(OBJ_DIR)/%.o: %.c
 	$(CC) $(CFLAGS) $< -o $@
 
 $(EXECUTABLES): $(BIN_DIR)/%: $(OBJ_DIR)/$(notdir /%).o $(OBJS)
 	$(CC) $< $(OBJS) $(LIBS) -o $@
+
+$(OBJ_DIR)/libssd1306i2c.o: libssd1306i2c.c libssd1306i2c.h
 
 clean:
 	rm -rf $(BIN_DIR) $(OBJ_DIR)
