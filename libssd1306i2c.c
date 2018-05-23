@@ -76,7 +76,7 @@ void ssd1306i2c_setpos(uint8_t x, uint8_t y) {
 }
 
 void ssd1306i2c_fill4(uint8_t p1, uint8_t p2, uint8_t p3, uint8_t p4) {
-    ssd1306i2c_setpos(0, 0);
+	ssd1306i2c_setpos(0, 0);
 	for (uint16_t i = 0; i < 128 * 8 / 4; i++) {
 		wiringPiI2CWriteReg8(ssd1306i2c_fd, 0x40, p1);
 		wiringPiI2CWriteReg8(ssd1306i2c_fd, 0x40, p2);
